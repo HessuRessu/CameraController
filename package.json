@@ -1,0 +1,11 @@
+{
+  "name": "com.pihkura.camera",
+  "version": "1.0.0",
+  "displayName": "Simple RTS / Citybuilder Camera Controller",
+  "description": "Reusable modular CameraController for RTS and Targeted cameras.",
+  "unity": "2022.3",
+  "author": {
+    "name": "Hessu",
+    "email": "hessu81@outlook.com"
+  }
+}
