@@ -66,10 +66,11 @@ You can add this repository directly as a Git package:
 
 ## 🛠️ Usage
 
-1. Create a new GameObject with `CameraController` attached.  
+1. Attach `CameraController` script to GameObject containing Main Camera.  
 2. Assign:  
    - A **Target** (e.g. the player or focus point)  
    - A **CameraConfiguration** values  
+   - Click **Detectd Defaults** button to assign ray / bounds values based on Terrain object (Optional)
 3. Choose your default behaviour (used with Behaviour index).
    - RTS = 0
    - Following = 1
