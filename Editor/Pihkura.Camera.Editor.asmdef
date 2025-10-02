@@ -1,0 +1,10 @@
+{
+  "name": "Pihkura.Camera.Editor",
+  "rootNamespace": "Pihkura.Camera.Editor",
+  "references": [
+    "Pihkura.Camera"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ]
+}
