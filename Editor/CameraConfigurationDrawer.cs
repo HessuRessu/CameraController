@@ -1,30 +1,27 @@
 using UnityEngine;
 using UnityEditor;
 using Pihkura.Camera;
-using Pihkura.Camera.Utils;
 
 [CustomPropertyDrawer(typeof(CameraConfiguration))]
 public class CameraConfigurationDrawer : PropertyDrawer
 {
-    private string GetFoldoutKey(string propertyName, string foldName) => $"CameraConfig_{propertyName}_{foldName}_Foldout";
+    private string GetFoldoutKey(string propertyName, string foldName) 
+        => $"CameraConfig_{propertyName}_{foldName}_Foldout";
 
     private bool GetFoldout(string key, bool defaultValue = true)
-    {
-        return EditorPrefs.GetBool(key, defaultValue);
-    }
+        => EditorPrefs.GetBool(key, defaultValue);
 
     private void SetFoldout(string key, bool value)
-    {
-        EditorPrefs.SetBool(key, value);
-    }
+        => EditorPrefs.SetBool(key, value);
 
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
         EditorGUI.BeginProperty(position, label, property);
-
-        EditorGUILayout.Space();
+        property.serializedObject.Update();
 
         string propName = property.name;
+
+        EditorGUILayout.Space();
 
         // --- Distance & Zoom ---
         string distanceKey = GetFoldoutKey(propName, "DistanceZoom");
@@ -137,11 +134,66 @@ public class CameraConfigurationDrawer : PropertyDrawer
         }
 
         EditorGUILayout.Space();
+
+        // --- Detect Defaults -nappi ---
+        if (GUILayout.Button("Detect Defaults"))
+        {
+            DetectDefaults(property);
+        }
+
+        property.serializedObject.ApplyModifiedProperties();
         EditorGUI.EndProperty();
     }
 
-    public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+    private void DetectDefaults(SerializedProperty property)
     {
-        return base.GetPropertyHeight(property, label);
+        if (Terrain.activeTerrain != null)
+        {
+            Terrain terrain = Terrain.activeTerrain;
+            int defaultCollisionLayer = 1 << terrain.gameObject.layer;
+            Vector3 size = terrain.terrainData.size;
+            Vector3 pos = terrain.transform.position;
+
+            SerializedProperty collisionMask = property.FindPropertyRelative("collisionMask");
+            if (collisionMask != null)
+                collisionMask.intValue = defaultCollisionLayer;
+
+            SerializedProperty areaBounds = property.FindPropertyRelative("areaBounds");
+            if (areaBounds != null)
+            {
+                SerializedProperty minBounds = areaBounds.FindPropertyRelative("minBounds");
+                SerializedProperty maxBounds = areaBounds.FindPropertyRelative("maxBounds");
+
+                if (minBounds != null) minBounds.vector3Value = pos;
+                if (maxBounds != null) maxBounds.vector3Value = pos + size;
+            }
+
+            string[] rayKeys = new string[3] { "forwardRay", "downRay", "groundRay" };
+            float[] maxDistances = new float[3] { size.y, size.y, 10f };
+            Vector3[] offsets = new Vector3[3] { Vector3.zero, Vector3.zero, Vector3.up * 5 };
+
+            for (int i = 0; i < rayKeys.Length; i++)
+            {
+                SerializedProperty ray = property.FindPropertyRelative(rayKeys[i]);
+                if (ray != null)
+                {
+                    SerializedProperty maxDistance = ray.FindPropertyRelative("maxDistance");
+                    if (maxDistance != null)
+                        maxDistance.floatValue = maxDistances[i];
+
+                    SerializedProperty offset = ray.FindPropertyRelative("offset");
+                    if (offset != null)
+                        offset.vector3Value = offsets[i];
+
+                    SerializedProperty mask = ray.FindPropertyRelative("mask");
+                    if (mask != null)
+                        mask.intValue = defaultCollisionLayer;
+                }
+            }
+        }
+        else
+        {
+            Debug.LogWarning("No active Terrain found in the scene.");
+        }
     }
 }

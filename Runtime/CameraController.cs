@@ -26,7 +26,11 @@ namespace Pihkura.Camera
         /// Flag controlling if creating singleton object from CameraController.
         /// </summary>
         public bool useSingleton;
-
+        
+        /// <summary>
+        /// Current active behaviour index.
+        /// </summary>
+        public int behaviourIndex = 0;
         /// <summary>
         /// The target Transform the camera follows or looks at.
         /// </summary>
@@ -41,11 +45,6 @@ namespace Pihkura.Camera
         /// Camera runtime state data.
         /// </summary>
         public CameraData data;
-
-        /// <summary>
-        /// Current active behaviour index.
-        /// </summary>
-        public int behaviourIndex = 0;
 
         /// <summary>
         /// Array of available camera behaviours (e.g., RTS, Targeted).

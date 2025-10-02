@@ -103,7 +103,7 @@ namespace Pihkura.Camera
         /// <summary>
         /// Speed at which the camera moves across the map.
         /// </summary>
-        public float movementSpeed;
+        public float movementSpeed = 1f;
 
         [Header("Ray settings")]
         /// <summary>
