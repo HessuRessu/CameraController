@@ -18,6 +18,16 @@ namespace Pihkura.Camera
         public const int BEHAVIOUR_CINEMATIC = 3;
 
         /// <summary>
+        /// CameraController instance for singleton object.
+        /// </summary>
+        public static CameraController Instance { get; set; }
+
+        /// <summary>
+        /// Flag controlling if creating singleton object from CameraController.
+        /// </summary>
+        public bool useSingleton;
+
+        /// <summary>
         /// The target Transform the camera follows or looks at.
         /// </summary>
         public Transform target;
@@ -41,6 +51,22 @@ namespace Pihkura.Camera
         /// Array of available camera behaviours (e.g., RTS, Targeted).
         /// </summary>
         private ICameraBehaviour[] availabeBehaviours;
+
+        /// <summary>
+        /// Initializes the camera controller instance for singleton object.
+        /// </summary>
+        private void Awake() {
+            if (!useSingleton)
+                return;
+            if (Instance == null)
+                {
+                    Instance = this;
+                }
+                else
+                {
+                    Destroy(this.gameObject);
+                }
+        }
 
         /// <summary>
         /// Initializes the camera controller and sets up behaviours and rays.
