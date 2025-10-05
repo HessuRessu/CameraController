@@ -1,6 +1,10 @@
 using UnityEngine;
 using Pihkura.Camera.Utils;
 
+#if (ENABLE_INPUT_SYSTEM)
+using UnityEngine.InputSystem;
+#endif
+
 namespace Pihkura.Camera
 {
     /// <summary>
@@ -10,6 +14,12 @@ namespace Pihkura.Camera
     [System.Serializable]
     public class CameraConfiguration
     {
+
+        public enum InputController
+        {
+            Legacy = 0,
+            InputSystem = 1
+        }
 
         [Header("Distance & Zoom")]
         /// <summary>
@@ -119,6 +129,17 @@ namespace Pihkura.Camera
         /// </summary>
         public CameraRay groundRay;
 
+#if (ENABLE_INPUT_SYSTEM)
+        [Header("Input settings")]
+        /// <summary>
+        /// Which input handling method we should use.
+        /// </summary>
+        public InputController inputController;
+        /// <summary>
+        /// If we are using new InputSystem, we need to do action mapping.
+        /// </summary>
+        public InputActionAsset inputMap;
+#endif
         /// <summary>
         /// Clamps the given position within the configured area bounds.
         /// </summary>

@@ -1,7 +1,6 @@
 using UnityEngine;
-using Pihkura.Camera.Utils;
 using Pihkura.Camera.Behaviour;
-using System.Collections.Generic;
+using Pihkura.Camera.Control;
 
 namespace Pihkura.Camera
 {
@@ -31,6 +30,7 @@ namespace Pihkura.Camera
         /// Current active behaviour index.
         /// </summary>
         public int behaviourIndex = 0;
+
         /// <summary>
         /// The target Transform the camera follows or looks at.
         /// </summary>
@@ -52,19 +52,27 @@ namespace Pihkura.Camera
         private ICameraBehaviour[] availabeBehaviours;
 
         /// <summary>
+        /// Input controller for the camera.
+        /// </summary>
+        private IInputControlManager inputControlManager;
+
+        /// <summary>
         /// Initializes the camera controller instance for singleton object.
         /// </summary>
-        private void Awake() {
+        private void Awake()
+        {
+            this.inputControlManager = BaseInputControlManager.Initialize(this.configuration);
+                
             if (!useSingleton)
                 return;
             if (Instance == null)
-                {
-                    Instance = this;
-                }
-                else
-                {
-                    Destroy(this.gameObject);
-                }
+            {
+                Instance = this;
+            }
+            else
+            {
+                Destroy(this.gameObject);
+            }
         }
 
         /// <summary>
@@ -79,7 +87,6 @@ namespace Pihkura.Camera
                 new FreeCameraBehaviour(this.configuration, this.data),
                 new CinematicCameraBehaviour(this.configuration, this.data)
             };
-
             this.data.Update(this.transform);
             this.UpdateRays();
             this.SetBehaviour(this.behaviourIndex, null);
@@ -103,11 +110,21 @@ namespace Pihkura.Camera
         }
 
         /// <summary>
+        /// Handles camera controller enable event.
+        /// </summary>
+        void OnEnable() => this.inputControlManager.OnEnable();
+
+        /// <summary>
+        /// Handles camera controller disable event.
+        /// </summary>
+        void OnDisable() => this.inputControlManager.OnDisable();
+
+        /// <summary>
         /// Switches to camera behaviour in the list defined by index.
         /// Releases the current behaviour if necessary and initializes the new one.
         /// <param name="index">Index of desired behaviour.</param>
         /// </summary>
-        private void SetBehaviour(int index, Transform target)
+        public void SetBehaviour(int index, Transform target)
         {
             if (index >= this.availabeBehaviours.Length || index < 0)
                 return;
@@ -122,7 +139,7 @@ namespace Pihkura.Camera
         /// Rotates to the next camera behaviour in the list.
         /// Releases the current behaviour if necessary and initializes the new one.
         /// </summary>
-        private void RotateBehaviour()
+        public void RotateBehaviour()
         {
             if (this.behaviourIndex != -1)
                 this.availabeBehaviours[this.behaviourIndex].Release();
@@ -141,9 +158,6 @@ namespace Pihkura.Camera
         /// </summary>
         private void OnUpdateCompleted()
         {
-            if (Input.GetKeyDown(KeyCode.Tab))
-                this.RotateBehaviour();
-
             this.availabeBehaviours[this.behaviourIndex].OnUpdateCompleted();
             this.transform.position = this.data.next.position;
             this.transform.rotation = this.data.next.rotation;
@@ -176,30 +190,11 @@ namespace Pihkura.Camera
         /// </summary>
         private void HandleInput()
         {
-            // Movement input
-            CameraUtils.GetAxis("Horizontal", ref this.data.movementInputX);
-            CameraUtils.GetAxis("Vertical", ref this.data.movementInputY);
 
-            // Zoom input
-            CameraUtils.GetAxis("Mouse ScrollWheel", ref this.data.zoomInput, 8f);
-
-            // Rotation input (mouse)
-            if (this.configuration.rotationButton != -1 && Input.GetMouseButton(this.configuration.rotationButton))
-            {
-                CameraUtils.GetAxis("Mouse Y", ref this.data.rotationInputX);
-                CameraUtils.GetAxis("Mouse X", ref this.data.rotationInputY);
-            }
-            else
-            {
-                this.data.rotationInputX = 0f;
-                this.data.rotationInputY = 0f;
-            }
-
-            // Rotation input (keyboard)
-            if (Input.GetKey(KeyCode.Q))
-                this.data.rotationInputY = this.configuration.keyboardRotationSpeed;
-            if (Input.GetKey(KeyCode.E))
-                this.data.rotationInputY = -this.configuration.keyboardRotationSpeed;
+            this.inputControlManager.Move(this.data);
+            this.inputControlManager.Zoom(this.data);
+            this.inputControlManager.Rotate(this.data);
+            this.inputControlManager.Control(this);
         }
     }
 }

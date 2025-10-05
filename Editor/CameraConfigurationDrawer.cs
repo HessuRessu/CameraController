@@ -133,6 +133,20 @@ public class CameraConfigurationDrawer : PropertyDrawer
             EditorGUILayout.EndVertical();
         }
 
+        // --- Input Settings ---
+#if (ENABLE_INPUT_SYSTEM)
+        string inputKey = GetFoldoutKey(propName, "Input settings");
+        bool showInputSettings = GetFoldout(inputKey);
+        showInputSettings = EditorGUILayout.Foldout(showInputSettings, "Input Settings", true);
+        SetFoldout(inputKey, showInputSettings);
+        if (showInputSettings)
+        {
+            EditorGUILayout.BeginVertical("box");
+            EditorGUILayout.PropertyField(property.FindPropertyRelative("inputController"), true);
+            EditorGUILayout.PropertyField(property.FindPropertyRelative("inputMap"), true);
+            EditorGUILayout.EndVertical();
+        }
+#endif
         EditorGUILayout.Space();
 
         // --- Detect Defaults -nappi ---

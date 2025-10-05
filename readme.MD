@@ -10,6 +10,7 @@ The system is built with **behaviour classes**, making it easy to extend and ada
 - **Behaviour-based architecture**
   - `RTSCameraBehaviour` for free RTS-style movement  
   - `TargetedCameraBehaviour` for follow/target lock style  
+  - etc.
   - Easily extendable with new behaviours  
 - **Camera configuration**  
   - All settings are centralized in `CameraConfiguration`  
@@ -22,6 +23,9 @@ The system is built with **behaviour classes**, making it easy to extend and ada
   - Camera state is stored in `CameraData` and `CameraTransform`, allowing future save/load support  
 - **Utility methods**  
   - `CameraUtils` provides helpers for axis smoothing, LOS correction, and collision handling  
+- **Input configuration**  
+  - Should work with both Legacy and New Input Systems  
+  - Configurable via `CameraConfiguration`  
 
 ---
 
@@ -33,10 +37,19 @@ CameraController/
 │ ├─ CameraController.cs
 │ ├─ CameraConfiguration.cs
 │ ├─ CameraData.cs
+│ ├─ CameraInputAsset.inputactions
 │ ├─ Behaviour/
 │ │ ├─ BaseCameraBehaviour.cs
-│ │ ├─ RTSCameraBehaviour.cs
-│ │ └─ TargetedCameraBehaviour.cs
+│ │ ├─ CinematicCameraBehaviour.cs
+│ │ ├─ FollowingCameraBehaviour.cs
+│ │ ├─ FreeCameraBehaviour.cs
+│ │ ├─ ICameraBehaviour.cs
+│ │ └─ RTSCameraBehaviour.cs
+│ ├─ Controls/
+│ │ ├─ BaseInputControlManager.cs
+│ │ ├─ IInputControlManager.cs
+│ │ ├─ LegacyInputControlManager.cs
+│ │ └─ NewInputControlManager.cs
 │ └─ Utils/
 │   ├─ CameraUtils.cs
 │   ├─ CameraRay.cs
@@ -86,7 +99,6 @@ You can add this repository directly as a Git package:
 ## 🔮 Roadmap
 
 - [ ] Add save/load support (JSON serialization for `CameraData`)  
-- [ ] Input System support (currently uses `Input.GetAxisRaw`)  
 
 ---
 

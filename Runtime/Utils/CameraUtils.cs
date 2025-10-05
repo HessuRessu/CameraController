@@ -19,23 +19,22 @@ namespace Pihkura.Camera.Utils
         public static bool Between(this float value, float min, float max) => value >= min && value <= max;
 
         /// <summary>
-        /// Reads a raw input axis and applies smoothing with sensitivity and gravity.
+        /// Input raw axis value and applies smoothing with sensitivity and gravity.
         /// If the input is zero, the value decays towards zero based on gravity.
         /// </summary>
-        /// <param name="name">The name of the input axis (e.g., "Mouse X").</param>
+        /// <param name="rawValue">The raw value of input.</param>
         /// <param name="value">Reference to the current axis value to update.</param>
         /// <param name="sensitivity">Multiplier applied to input when active.</param>
         /// <param name="gravity">Rate at which the value decays to zero when no input is present.</param>
-        public static void GetAxis(string name, ref float value, float sensitivity = 1f, float gravity = 6f)
+        public static void SmoothInput(float rawValue, ref float value, float sensitivity = 1f, float gravity = 6f)
         {
-            float axis = Input.GetAxisRaw(name);
-            if (axis == 0)
+            if (rawValue == 0)
             {
                 value = Mathf.Clamp01(Mathf.Abs(value) - gravity * Time.unscaledDeltaTime) * Mathf.Sign(value);
             }
             else
             {
-                value = axis * sensitivity;
+                value = rawValue * sensitivity;
             }
         }
 
