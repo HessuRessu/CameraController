@@ -83,6 +83,8 @@ You can add this repository directly as a Git package:
 2. Assign:  
    - A **Target** (e.g. the player or focus point)  
    - A **CameraConfiguration** values  
+     Note: Assign **InputActionAsset** to CameraConfiguration if using new input system.  
+     example InputActionAsset `CameraInputAsset` is provided with the package.
    - Click **Detectd Defaults** button to assign ray / bounds values based on Terrain object (Optional)
 3. Choose your default behaviour (used with Behaviour index).
    - RTS = 0
