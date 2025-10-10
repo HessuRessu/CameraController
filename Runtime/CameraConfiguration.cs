@@ -37,7 +37,7 @@ namespace Pihkura.Camera
         /// <summary>
         /// Speed at which camera zooms in/out.
         /// </summary>
-        public float zoomSpeed = 2f;
+        public float zoomSpeed = 1000f;
 
         [Header("Rotation")]
         /// <summary>
