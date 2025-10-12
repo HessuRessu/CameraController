@@ -19,17 +19,17 @@ namespace Pihkura.Camera
         /// Handles movement logic for the camera.
         /// Each behaviour implements its own movement rules (e.g., RTS movement, following target).
         /// </summary>
-        void HandleMovement();
+        void HandleMovement(float dt);
 
         /// <summary>
         /// Handles camera rotation based on user input and internal smoothing.
         /// </summary>
-        void HandleRotation();
+        void HandleRotation(float dt);
 
         /// <summary>
         /// Handles camera zoom based on input (e.g., scroll wheel) and configuration.
         /// </summary>
-        void HandleZoom();
+        void HandleZoom(float dt);
 
         /// <summary>
         /// Called at the beginning of the update cycle.

@@ -19,7 +19,7 @@ namespace Pihkura.Camera.Behaviour
             this.data.origin = this.configuration.forwardRay.Point;
         }
 
-        public override void HandleMovement()
+        public override void HandleMovement(float dt)
         {
             this.data.effectivePitch = this.data.pitch + this.configuration.autoPitch;
 
@@ -27,9 +27,9 @@ namespace Pihkura.Camera.Behaviour
             Vector3 offset = rotation * new Vector3(0f, 0f, -this.data.distance);
 
             if (this.data.movementInputY != 0f)
-                this.data.origin += this.configuration.movementSpeed * this.data.speedRatio * this.data.movementInputY * new Vector3(this.data.current.forward.x, 0f, this.data.current.forward.z).normalized * Time.fixedUnscaledDeltaTime;
+                this.data.origin += this.configuration.movementSpeed * this.data.speedRatio * this.data.movementInputY * new Vector3(this.data.current.forward.x, 0f, this.data.current.forward.z).normalized * dt;
             if (this.data.movementInputX != 0f)
-                this.data.origin += this.configuration.movementSpeed * this.data.speedRatio * this.data.movementInputX * this.data.current.right.normalized * Time.fixedUnscaledDeltaTime;
+                this.data.origin += this.configuration.movementSpeed * this.data.speedRatio * this.data.movementInputX * this.data.current.right.normalized * dt;
 
             // this.data.origin.y = Terrain.activeTerrain.SampleHeight(this.data.origin);
             this.data.origin.y = this.configuration.groundRay.Point.y;
@@ -40,9 +40,9 @@ namespace Pihkura.Camera.Behaviour
             CameraUtils.HandleCameraCollision(configuration, data, ref desiredPosition);
 
             // --- Smooth movement & rotation ---
-            this.data.next.position = Vector3.SmoothDamp(this.data.current.position, desiredPosition + (Vector3.up * this.configuration.heightOffset), ref this.data.moveVelocity, this.configuration.moveSmoothTime, float.PositiveInfinity, Time.fixedUnscaledDeltaTime);
+            this.data.next.position = Vector3.SmoothDamp(this.data.current.position, desiredPosition + (Vector3.up * this.configuration.heightOffset), ref this.data.moveVelocity, this.configuration.moveSmoothTime, float.PositiveInfinity, dt);
 
-            float t = 1f - Mathf.Exp(-Time.fixedUnscaledDeltaTime / Mathf.Max(this.configuration.rotSmoothTime, 0.0001f));
+            float t = 1f - Mathf.Exp(-dt / Mathf.Max(this.configuration.rotSmoothTime, 0.0001f));
             this.data.next.rotation = Quaternion.Slerp(this.data.current.rotation, rotation, t);
         }
     }

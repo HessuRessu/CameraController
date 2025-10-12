@@ -57,6 +57,11 @@ namespace Pihkura.Camera
         private IInputControlManager inputControlManager;
 
         /// <summary>
+        /// Time Delta.
+        /// </summary>
+        [System.NonSerialized] public float dt;
+
+        /// <summary>
         /// Initializes the camera controller instance for singleton object.
         /// </summary>
         private void Awake()
@@ -98,13 +103,14 @@ namespace Pihkura.Camera
         /// </summary>
         void LateUpdate()
         {
+            this.dt = Time.unscaledDeltaTime;
             this.OnUpdateBegin();
             this.UpdateRays();
             this.HandleInput();
 
-            this.availabeBehaviours[this.behaviourIndex].HandleZoom();
-            this.availabeBehaviours[this.behaviourIndex].HandleRotation();
-            this.availabeBehaviours[this.behaviourIndex].HandleMovement();
+            this.availabeBehaviours[this.behaviourIndex].HandleZoom(this.dt);
+            this.availabeBehaviours[this.behaviourIndex].HandleRotation(this.dt);
+            this.availabeBehaviours[this.behaviourIndex].HandleMovement(this.dt);
 
             this.OnUpdateCompleted();
         }

@@ -46,17 +46,17 @@ namespace Pihkura.Camera.Behaviour
         /// Handles camera rotation logic using input and smoothing.
         /// Can be overridden if behaviour needs custom rotation handling.
         /// </summary>
-        public virtual void HandleRotation()
+        public virtual void HandleRotation(float dt)
         {
            if (data.rotationInputX != 0f || data.rotationInputY != 0f)
             {
                 if (Mathf.Abs(data.rotationInputY) > 0.0001f)
                 {
-                    data.targetYaw += data.rotationInputY * configuration.yawSpeed * Time.fixedUnscaledDeltaTime;
+                    data.targetYaw += data.rotationInputY * configuration.yawSpeed * dt;
                 }
                 if (Mathf.Abs(data.rotationInputX) > 0.0001f)
                 {
-                    data.targetPitch -= data.rotationInputX * configuration.pitchSpeed * Time.fixedUnscaledDeltaTime;
+                    data.targetPitch -= data.rotationInputX * configuration.pitchSpeed * dt;
                     data.targetPitch = Mathf.Clamp(data.targetPitch, configuration.minPitch, configuration.maxPitch);
                 }
             }
@@ -68,7 +68,7 @@ namespace Pihkura.Camera.Behaviour
                 ref data.yawVelocity,
                 configuration.rotSmoothTime,
                 float.PositiveInfinity,
-                Time.fixedUnscaledDeltaTime
+                dt
             );
 
             data.pitch = Mathf.SmoothDampAngle(
@@ -77,7 +77,7 @@ namespace Pihkura.Camera.Behaviour
                 ref data.pitchVelocity,
                 configuration.rotSmoothTime,
                 float.PositiveInfinity,
-                Time.fixedUnscaledDeltaTime
+                dt
             );
         }
 
@@ -85,7 +85,7 @@ namespace Pihkura.Camera.Behaviour
         /// Handles camera zoom using scroll wheel or other configured input.
         /// Adjusts camera distance within min/max bounds.
         /// </summary>
-        public virtual void HandleZoom()
+        public virtual void HandleZoom(float dt)
         {
              if (Mathf.Abs(data.zoomInput) > 0.0001f)
             {
@@ -98,7 +98,7 @@ namespace Pihkura.Camera.Behaviour
         /// Must be implemented in concrete behaviours.
         /// Defines how the camera moves in the world (e.g., follow target, RTS free move).
         /// </summary>
-        public abstract void HandleMovement();
+        public abstract void HandleMovement(float dt);
 
         /// <summary>
         /// Called at the beginning of the update cycle.

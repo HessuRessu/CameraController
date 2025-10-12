@@ -28,10 +28,10 @@ namespace Pihkura.Camera.Behaviour
             desiredRotation = Quaternion.LookRotation(target.position - desiredPosition);
         }
 
-        public override void HandleMovement()
+        public override void HandleMovement(float dt)
         {
             // Slowly orbit around target
-            orbitAngle += Time.fixedUnscaledDeltaTime * 10f; // degrees per second
+            orbitAngle += dt * 10f; // degrees per second
             float radians = orbitAngle * Mathf.Deg2Rad;
 
             Vector3 offset = new Vector3(
@@ -44,8 +44,8 @@ namespace Pihkura.Camera.Behaviour
             desiredRotation = Quaternion.LookRotation(data.target.position - desiredPosition);
 
             // Smooth interpolation
-            Vector3 smoothedPos = Vector3.Lerp(data.current.position, desiredPosition, Time.fixedUnscaledDeltaTime);
-            Quaternion smoothedRot = Quaternion.Slerp(data.current.rotation, desiredRotation, Time.fixedUnscaledDeltaTime);
+            Vector3 smoothedPos = Vector3.Lerp(data.current.position, desiredPosition, dt);
+            Quaternion smoothedRot = Quaternion.Slerp(data.current.rotation, desiredRotation, dt);
             CameraUtils.HandleCameraCollision(configuration, data, ref smoothedPos);
 
             // Instead of writing to transform directly, update CameraData
@@ -55,12 +55,12 @@ namespace Pihkura.Camera.Behaviour
             data.next.right = smoothedRot * Vector3.right;
         }
 
-        public override void HandleRotation()
+        public override void HandleRotation(float dt)
         {
             // Rotation handled in HandleMovement
         }
 
-        public override void HandleZoom()
+        public override void HandleZoom(float dt)
         {
 
         }

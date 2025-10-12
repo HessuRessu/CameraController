@@ -69,11 +69,11 @@ namespace Pihkura.Camera
         /// <summary>
         /// Time in seconds to smooth position changes.
         /// </summary>
-        public float moveSmoothTime = 0.4f;
+        public float moveSmoothTime = 0.1f;
         /// <summary>
         /// Time in seconds to smooth rotation changes.
         /// </summary>
-        public float rotSmoothTime = 0.4f;
+        public float rotSmoothTime = 0.1f;
 
         [Header("Collision")]
         /// <summary>
@@ -113,7 +113,7 @@ namespace Pihkura.Camera
         /// <summary>
         /// Speed at which the camera moves across the map.
         /// </summary>
-        public float movementSpeed = 50f;
+        public float movementSpeed = 100f;
 
         [Header("Ray settings")]
         /// <summary>

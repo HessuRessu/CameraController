@@ -23,7 +23,7 @@ namespace Pihkura.Camera.Behaviour
             data.targetPitch = data.pitch;
         }
 
-        public override void HandleMovement()
+        public override void HandleMovement(float dt)
         {
             // Base direction vectors
             Vector3 forward = data.current.forward;
@@ -54,17 +54,17 @@ namespace Pihkura.Camera.Behaviour
                 desiredPosition.y = this.configuration.groundRay.Point.y + this.configuration.maxDistance;
 
             // Smooth movement
-            data.next.position = Vector3.SmoothDamp(data.current.position, desiredPosition, ref data.moveVelocity, configuration.moveSmoothTime, float.PositiveInfinity, Time.fixedUnscaledDeltaTime);
+            data.next.position = Vector3.SmoothDamp(data.current.position, desiredPosition, ref data.moveVelocity, configuration.moveSmoothTime, float.PositiveInfinity, dt);
             CameraUtils.HandleCameraCollision(configuration, data, ref data.next.position);
         }
 
-        public override void HandleRotation()
+        public override void HandleRotation(float dt)
         {
-            base.HandleRotation();
+            base.HandleRotation(dt);
             data.next.rotation = Quaternion.Euler(data.pitch, data.yaw, 0f);
         }
 
-        public override void HandleZoom() { }
+        public override void HandleZoom(float dt) { }
 
         public override void OnUpdateBegin()
         {
