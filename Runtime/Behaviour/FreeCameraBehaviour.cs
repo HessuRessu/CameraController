@@ -54,7 +54,7 @@ namespace Pihkura.Camera.Behaviour
                 desiredPosition.y = this.configuration.groundRay.Point.y + this.configuration.maxDistance;
 
             // Smooth movement
-            data.next.position = Vector3.SmoothDamp(data.current.position, desiredPosition, ref data.moveVelocity, configuration.moveSmoothTime, float.PositiveInfinity, Time.unscaledDeltaTime);
+            data.next.position = Vector3.SmoothDamp(data.current.position, desiredPosition, ref data.moveVelocity, configuration.moveSmoothTime, float.PositiveInfinity, Time.fixedUnscaledDeltaTime);
             CameraUtils.HandleCameraCollision(configuration, data, ref data.next.position);
         }
 

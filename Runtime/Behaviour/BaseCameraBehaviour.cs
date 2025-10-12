@@ -52,11 +52,11 @@ namespace Pihkura.Camera.Behaviour
             {
                 if (Mathf.Abs(data.rotationInputY) > 0.0001f)
                 {
-                    data.targetYaw += data.rotationInputY * configuration.yawSpeed * Time.unscaledDeltaTime;
+                    data.targetYaw += data.rotationInputY * configuration.yawSpeed * Time.fixedUnscaledDeltaTime;
                 }
                 if (Mathf.Abs(data.rotationInputX) > 0.0001f)
                 {
-                    data.targetPitch -= data.rotationInputX * configuration.pitchSpeed * Time.unscaledDeltaTime;
+                    data.targetPitch -= data.rotationInputX * configuration.pitchSpeed * Time.fixedUnscaledDeltaTime;
                     data.targetPitch = Mathf.Clamp(data.targetPitch, configuration.minPitch, configuration.maxPitch);
                 }
             }
@@ -68,7 +68,7 @@ namespace Pihkura.Camera.Behaviour
                 ref data.yawVelocity,
                 configuration.rotSmoothTime,
                 float.PositiveInfinity,
-                Time.unscaledDeltaTime
+                Time.fixedUnscaledDeltaTime
             );
 
             data.pitch = Mathf.SmoothDampAngle(
@@ -77,7 +77,7 @@ namespace Pihkura.Camera.Behaviour
                 ref data.pitchVelocity,
                 configuration.rotSmoothTime,
                 float.PositiveInfinity,
-                Time.unscaledDeltaTime
+                Time.fixedUnscaledDeltaTime
             );
         }
 

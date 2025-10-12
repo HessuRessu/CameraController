@@ -31,15 +31,15 @@ namespace Pihkura.Camera.Behaviour
 
             if (Vector3.Distance(this.configuration.forwardRay.Point, this.data.target.position) > 10f)
             {
-                this.data.next.position = Vector3.MoveTowards(this.data.current.position, desiredPosition + (Vector3.up * this.configuration.heightOffset), Time.unscaledDeltaTime * 100f);
+                this.data.next.position = Vector3.MoveTowards(this.data.current.position, desiredPosition + (Vector3.up * this.configuration.heightOffset), Time.fixedUnscaledDeltaTime * 100f);
                 CameraUtils.HandleCameraCollision(configuration, data, ref this.data.next.position);
             }
             else
             {
                 CameraUtils.HandleCameraCollision(configuration, data, ref desiredPosition);
-                this.data.next.position = Vector3.SmoothDamp(this.data.current.position, desiredPosition + (Vector3.up * this.configuration.heightOffset), ref this.data.moveVelocity, this.configuration.moveSmoothTime, float.PositiveInfinity, Time.unscaledDeltaTime);
+                this.data.next.position = Vector3.SmoothDamp(this.data.current.position, desiredPosition + (Vector3.up * this.configuration.heightOffset), ref this.data.moveVelocity, this.configuration.moveSmoothTime, float.PositiveInfinity, Time.fixedUnscaledDeltaTime);
             }
-            float t = 1f - Mathf.Exp(-Time.unscaledDeltaTime / Mathf.Max(this.configuration.rotSmoothTime, 0.0001f));
+            float t = 1f - Mathf.Exp(-Time.fixedUnscaledDeltaTime / Mathf.Max(this.configuration.rotSmoothTime, 0.0001f));
             this.data.next.rotation = Quaternion.Slerp(this.data.current.rotation, rotation, t);
         }
     }
