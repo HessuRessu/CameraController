@@ -183,8 +183,8 @@ public class CameraConfigurationDrawer : PropertyDrawer
             }
 
             string[] rayKeys = new string[3] { "forwardRay", "downRay", "groundRay" };
-            float[] maxDistances = new float[3] { size.y, size.y, 10f };
-            Vector3[] offsets = new Vector3[3] { Vector3.zero, Vector3.zero, Vector3.up * 5 };
+            float[] maxDistances = new float[3] { size.y, size.y, 100f };
+            Vector3[] offsets = new Vector3[3] { Vector3.zero, Vector3.zero, Vector3.up * 50f };
 
             for (int i = 0; i < rayKeys.Length; i++)
             {
