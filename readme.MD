@@ -65,7 +65,7 @@ CameraController/
 ## 🚀 Installation
 
 ### Option 1: Copy-paste
-Simply copy the `Runtime` folder into your Unity project's `Assets/Scripts/Camera/` folder.
+Simply copy the `Runtime` folder into your Unity project's `Assets/Scripts/unity-camera-controller/` folder.
 
 ### Option 2: Unity Package Manager (recommended)
 You can add this repository directly as a Git package:
@@ -73,7 +73,7 @@ You can add this repository directly as a Git package:
 1. Open **Unity → Window → Package Manager**  
 2. Click **+ → Add package from git URL**  
 3. Paste:  
-   `https://github.com/hessuressu/CameraController.git`
+   `https://github.com/hessuressu/unity-camera-controller.git`
 
 ---
 
