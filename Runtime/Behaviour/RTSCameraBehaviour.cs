@@ -27,16 +27,22 @@ namespace Pihkura.Camera.Behaviour
             Vector3 offset = rotation * new Vector3(0f, 0f, -this.data.distance);
 
             if (this.data.movementInputY != 0f)
+            {
                 this.data.origin += this.configuration.movementSpeed * this.data.speedRatio * this.data.movementInputY * new Vector3(this.data.current.forward.x, 0f, this.data.current.forward.z).normalized * dt;
+                this.moving = true;
+            }
             if (this.data.movementInputX != 0f)
+            {
                 this.data.origin += this.configuration.movementSpeed * this.data.speedRatio * this.data.movementInputX * this.data.current.right.normalized * dt;
+                this.moving = true;
+            }
 
             // this.data.origin.y = Terrain.activeTerrain.SampleHeight(this.data.origin);
             this.data.origin.y = this.configuration.groundRay.Point.y;
             this.data.origin = this.configuration.GetBoundedPosition(ref this.data.origin);
 
             Vector3 desiredPosition = this.data.origin + offset;
-            CameraUtils.HandleLOSCorrection(configuration, data, ref desiredPosition, ref offset, ref rotation);
+            CameraUtils.HandleLOSCorrection(configuration, data, ref desiredPosition, ref offset, ref rotation, this.moving);
             CameraUtils.HandleCameraCollision(configuration, data, ref desiredPosition);
 
             // --- Smooth movement & rotation ---

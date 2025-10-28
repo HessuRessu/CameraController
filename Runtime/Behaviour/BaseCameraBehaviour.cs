@@ -21,6 +21,11 @@ namespace Pihkura.Camera.Behaviour
         protected CameraData data;
 
         /// <summary>
+        /// Flag indicating if camera is moving.
+        /// </summary>
+        protected bool moving;
+
+        /// <summary>
         /// Creates a new base camera behaviour.
         /// </summary>
         /// <param name="transform">The camera transform to control.</param>
@@ -53,11 +58,13 @@ namespace Pihkura.Camera.Behaviour
                 if (Mathf.Abs(data.rotationInputY) > 0.0001f)
                 {
                     data.targetYaw += data.rotationInputY * configuration.yawSpeed * dt;
+                    this.moving = true;
                 }
                 if (Mathf.Abs(data.rotationInputX) > 0.0001f)
                 {
                     data.targetPitch -= data.rotationInputX * configuration.pitchSpeed * dt;
                     data.targetPitch = Mathf.Clamp(data.targetPitch, configuration.minPitch, configuration.maxPitch);
+                    this.moving = true;
                 }
             }
 
@@ -91,6 +98,7 @@ namespace Pihkura.Camera.Behaviour
             {
                 data.distance -= data.zoomInput * configuration.zoomSpeed * data.speedRatio;
                 data.distance = Mathf.Clamp(data.distance, configuration.minDistance, configuration.maxDistance);
+                this.moving = true;
             }
         }
 
@@ -107,6 +115,7 @@ namespace Pihkura.Camera.Behaviour
         public virtual void OnUpdateBegin()
         {
             this.data.speedRatio = this.configuration.GetDistanceRatio(this.data.current.position, this.data.origin);
+            this.moving = false;
         }
 
         /// <summary>

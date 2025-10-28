@@ -27,7 +27,7 @@ namespace Pihkura.Camera.Behaviour
             Vector3 offset = rotation * new Vector3(0f, 0f, -this.data.distance);
             Vector3 desiredPosition = this.data.origin + offset;
 
-            CameraUtils.HandleLOSCorrection(configuration, data, ref desiredPosition, ref offset, ref rotation);
+            CameraUtils.HandleLOSCorrection(configuration, data, ref desiredPosition, ref offset, ref rotation, this.moving);
 
             if (Vector3.Distance(this.configuration.forwardRay.Point, this.data.target.position) > 10f)
             {

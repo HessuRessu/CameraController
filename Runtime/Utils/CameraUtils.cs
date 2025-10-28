@@ -57,6 +57,7 @@ namespace Pihkura.Camera.Utils
             ref Vector3 desiredPosition,
             ref Vector3 offset,
             ref Quaternion rotation,
+            bool moving,
             float losRelaxDelay = 0.3f)
         {
             // --- Check Line-of-Sight ---
@@ -78,7 +79,7 @@ namespace Pihkura.Camera.Utils
                 offset = rotation * new Vector3(0f, 0f, -data.distance);
                 desiredPosition = data.origin + offset;
             }
-            else
+            else if (moving)
             {
                 // LOS clear → increase timer
                 data.losTimer += Time.unscaledDeltaTime;
