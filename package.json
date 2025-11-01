@@ -1,5 +1,5 @@
 {
-  "name": "com.pihkura.camera-controller",
+  "name": "com.pihkura.unity-camera-controller",
   "version": "1.0.0",
   "displayName": "Camera Controller",
   "description": "Reusable modular CameraController for RTS and Targeted cameras.",
