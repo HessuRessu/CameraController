@@ -71,6 +71,8 @@ namespace Pihkura.Camera
         private void EnsureInternalAssets()
         {
 #if (ENABLE_INPUT_SYSTEM)
+            if (this.configuration == null)
+                this.configuration = new();
             if (this.configuration.inputMap == null)
                 this.configuration.inputMap = AssetResolver.LoadAsset<InputActionAsset>("CameraInputAsset");
 #endif
