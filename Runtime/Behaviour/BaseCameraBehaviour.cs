@@ -1,4 +1,5 @@
 using UnityEngine;
+using Pihkura.Camera.Core;
 
 namespace Pihkura.Camera.Behaviour
 {

@@ -1,3 +1,4 @@
+using Pihkura.Camera.Core;
 
 namespace Pihkura.Camera.Control
 {

@@ -1,7 +1,7 @@
 using Pihkura.Camera.Utils;
 using UnityEngine;
 
-namespace Pihkura.Camera
+namespace Pihkura.Camera.Core
 {
 
     /// <summary>

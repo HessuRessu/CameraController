@@ -5,7 +5,7 @@ using Pihkura.Camera.Utils;
 using UnityEngine.InputSystem;
 #endif
 
-namespace Pihkura.Camera
+namespace Pihkura.Camera.Core
 {
     /// <summary>
     /// Stores configuration parameters for a camera, including distances, rotation, smoothing,

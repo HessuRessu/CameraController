@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using Pihkura.Camera.Utils;
-using UnityEngine;
+using Pihkura.Camera.Core;
 
 namespace Pihkura.Camera.Control
 {

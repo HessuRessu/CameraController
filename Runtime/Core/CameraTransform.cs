@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Pihkura.Camera.Utils
+namespace Pihkura.Camera.Core
 {
     /// <summary>
     /// Serializable container for camera transform data. 

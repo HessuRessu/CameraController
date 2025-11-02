@@ -1,6 +1,8 @@
 using UnityEngine;
 using Pihkura.Camera.Behaviour;
 using Pihkura.Camera.Control;
+using Pihkura.Camera.Core;
+using UnityEngine.InputSystem;
 
 namespace Pihkura.Camera
 {
@@ -61,13 +63,34 @@ namespace Pihkura.Camera
         /// </summary>
         [System.NonSerialized] public float dt;
 
+
+
+        /// <summary>
+        /// Ensures all required variables are set.
+        /// </summary>
+        private void EnsureInternalAssets()
+        {
+#if (ENABLE_INPUT_SYSTEM)
+            if (this.configuration.inputMap == null)
+                this.configuration.inputMap = AssetResolver.LoadAsset<InputActionAsset>("CameraInputAsset");
+#endif
+        }
+
+        /// <summary>
+        /// Unity On Validate callback: ensures all internal variables are set.
+        /// </summary>
+        void OnValidate()
+            => this.EnsureInternalAssets();
+
+
         /// <summary>
         /// Initializes the camera controller instance for singleton object.
         /// </summary>
         private void Awake()
         {
             this.inputControlManager = BaseInputControlManager.Initialize(this.configuration);
-                
+            this.EnsureInternalAssets();
+
             if (!useSingleton)
                 return;
             if (Instance == null)

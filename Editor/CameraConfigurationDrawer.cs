@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEditor;
-using Pihkura.Camera;
+using Pihkura.Camera.Core;
 
 [CustomPropertyDrawer(typeof(CameraConfiguration))]
 public class CameraConfigurationDrawer : PropertyDrawer

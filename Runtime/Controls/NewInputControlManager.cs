@@ -1,7 +1,8 @@
 #if (ENABLE_INPUT_SYSTEM)
-using Pihkura.Camera.Utils;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Pihkura.Camera.Utils;
+using Pihkura.Camera.Core;
 
 namespace Pihkura.Camera.Control
 {
