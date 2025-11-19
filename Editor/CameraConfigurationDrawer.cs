@@ -161,53 +161,45 @@ public class CameraConfigurationDrawer : PropertyDrawer
 
     private void DetectDefaults(SerializedProperty property)
     {
-        if (Terrain.activeTerrain != null)
+        int defaultCollisionLayer = 1 << LayerMask.NameToLayer("Terrain");
+        Vector3 size = new Vector3(4096, 500, 4096);
+        Vector3 pos = Vector3.zero;
+
+        SerializedProperty collisionMask = property.FindPropertyRelative("collisionMask");
+        if (collisionMask != null)
+            collisionMask.intValue = defaultCollisionLayer;
+
+        SerializedProperty areaBounds = property.FindPropertyRelative("areaBounds");
+        if (areaBounds != null)
         {
-            Terrain terrain = Terrain.activeTerrain;
-            int defaultCollisionLayer = 1 << terrain.gameObject.layer;
-            Vector3 size = terrain.terrainData.size;
-            Vector3 pos = terrain.transform.position;
+            SerializedProperty minBounds = areaBounds.FindPropertyRelative("minBounds");
+            SerializedProperty maxBounds = areaBounds.FindPropertyRelative("maxBounds");
 
-            SerializedProperty collisionMask = property.FindPropertyRelative("collisionMask");
-            if (collisionMask != null)
-                collisionMask.intValue = defaultCollisionLayer;
-
-            SerializedProperty areaBounds = property.FindPropertyRelative("areaBounds");
-            if (areaBounds != null)
-            {
-                SerializedProperty minBounds = areaBounds.FindPropertyRelative("minBounds");
-                SerializedProperty maxBounds = areaBounds.FindPropertyRelative("maxBounds");
-
-                if (minBounds != null) minBounds.vector3Value = pos;
-                if (maxBounds != null) maxBounds.vector3Value = pos + size;
-            }
-
-            string[] rayKeys = new string[3] { "forwardRay", "downRay", "groundRay" };
-            float[] maxDistances = new float[3] { size.y, size.y, 100f };
-            Vector3[] offsets = new Vector3[3] { Vector3.zero, Vector3.zero, Vector3.up * 50f };
-
-            for (int i = 0; i < rayKeys.Length; i++)
-            {
-                SerializedProperty ray = property.FindPropertyRelative(rayKeys[i]);
-                if (ray != null)
-                {
-                    SerializedProperty maxDistance = ray.FindPropertyRelative("maxDistance");
-                    if (maxDistance != null)
-                        maxDistance.floatValue = maxDistances[i];
-
-                    SerializedProperty offset = ray.FindPropertyRelative("offset");
-                    if (offset != null)
-                        offset.vector3Value = offsets[i];
-
-                    SerializedProperty mask = ray.FindPropertyRelative("mask");
-                    if (mask != null)
-                        mask.intValue = defaultCollisionLayer;
-                }
-            }
+            if (minBounds != null) minBounds.vector3Value = pos;
+            if (maxBounds != null) maxBounds.vector3Value = pos + size;
         }
-        else
+
+        string[] rayKeys = new string[3] { "forwardRay", "downRay", "groundRay" };
+        float[] maxDistances = new float[3] { size.y, size.y, 100f };
+        Vector3[] offsets = new Vector3[3] { Vector3.zero, Vector3.zero, Vector3.up * 50f };
+
+        for (int i = 0; i < rayKeys.Length; i++)
         {
-            Debug.LogWarning("No active Terrain found in the scene.");
+            SerializedProperty ray = property.FindPropertyRelative(rayKeys[i]);
+            if (ray != null)
+            {
+                SerializedProperty maxDistance = ray.FindPropertyRelative("maxDistance");
+                if (maxDistance != null)
+                    maxDistance.floatValue = maxDistances[i];
+
+                SerializedProperty offset = ray.FindPropertyRelative("offset");
+                if (offset != null)
+                    offset.vector3Value = offsets[i];
+
+                SerializedProperty mask = ray.FindPropertyRelative("mask");
+                if (mask != null)
+                    mask.intValue = defaultCollisionLayer;
+            }
         }
     }
 }
