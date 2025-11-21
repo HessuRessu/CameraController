@@ -11,10 +11,12 @@ namespace Pihkura.Camera.Behaviour
         public FollowingCameraBehaviour(CameraConfiguration configuration, CameraData data)
             : base(configuration, data) { }
 
-        public override void Initialize(Transform target)
+        public override bool Initialize(Transform target)
         {
-            base.Initialize(target);
+            if (target == null)
+                return false;            
             this.configuration.heightOffset = 0f;
+            return base.Initialize(target);
         }
 
         public override void HandleMovement(float dt)
@@ -42,8 +44,5 @@ namespace Pihkura.Camera.Behaviour
             float t = 1f - Mathf.Exp(-dt / Mathf.Max(this.configuration.rotSmoothTime, 0.0001f));
             this.data.next.rotation = Quaternion.Slerp(this.data.current.rotation, rotation, t);
         }
-
-        public override bool IsOperational()
-            => this.data.target != null;
     }
 }

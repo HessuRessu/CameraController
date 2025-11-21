@@ -14,13 +14,14 @@ namespace Pihkura.Camera.Behaviour
         public FreeCameraBehaviour(CameraConfiguration configuration, CameraData data)
             : base(configuration, data) { }
 
-        public override void Initialize(Transform target)
+        public override bool Initialize(Transform target)
         {
             // Initialize rotation values based on current camera transform
             data.yaw = data.current.eulerAngles.y;
             data.pitch = data.current.eulerAngles.x;
             data.targetYaw = data.yaw;
             data.targetPitch = data.pitch;
+            return base.Initialize(target);
         }
 
         public override void HandleMovement(float dt)

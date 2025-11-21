@@ -20,13 +20,15 @@ namespace Pihkura.Camera.Behaviour
         {
         }
 
-        public override void Initialize(Transform target)
+        public override bool Initialize(Transform target)
         {
-            base.Initialize(target);
+            if (target == null)
+                return false;
 
             // Start aligned with current camera position
             desiredPosition = target.position + new Vector3(0f, data.distance, -data.distance);
             desiredRotation = Quaternion.LookRotation(target.position - desiredPosition);
+            return base.Initialize(target);
         }
 
         public override void HandleMovement(float dt)
@@ -65,8 +67,5 @@ namespace Pihkura.Camera.Behaviour
         {
 
         }
-        
-        public override bool IsOperational()
-            => this.data.target != null;
     }
 }

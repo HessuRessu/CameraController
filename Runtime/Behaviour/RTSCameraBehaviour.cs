@@ -12,11 +12,11 @@ namespace Pihkura.Camera.Behaviour
             : base(configuration, data) { }
 
 
-        public override void Initialize(Transform target)
+        public override bool Initialize(Transform target)
         {
-            base.Initialize(target);
             this.configuration.heightOffset = 0f;
             this.data.origin = this.configuration.forwardRay.Point;
+            return base.Initialize(target);
         }
 
         public override void HandleMovement(float dt)

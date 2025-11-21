@@ -13,7 +13,7 @@ namespace Pihkura.Camera
         /// Should be called once before the first update.
         /// </summary>
         /// <param name="target">The target transform that the camera may follow or reference.</param>
-        void Initialize(Transform target);
+        bool Initialize(Transform target);
 
         /// <summary>
         /// Handles movement logic for the camera.
@@ -48,11 +48,5 @@ namespace Pihkura.Camera
         /// Can be used to clean up runtime state or reset data.
         /// </summary>
         void Release();
-
-        /// <summary>
-        /// Called when the behaviour is becoming active and indicating if behaviour can operate.
-        /// Can be used to check if conditions are met for behviour to operate.
-        /// </summary>
-        bool IsOperational();
     }
 }

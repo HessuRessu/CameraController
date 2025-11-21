@@ -43,9 +43,10 @@ namespace Pihkura.Camera.Behaviour
         /// Should be called once before the first update.
         /// </summary>
         /// <param name="target">The target transform (if applicable).</param>
-        public virtual void Initialize(Transform target)
+        public virtual bool Initialize(Transform target)
         {
             this.data.target = target;
+            return true;
         }
 
         /// <summary>
@@ -130,12 +131,5 @@ namespace Pihkura.Camera.Behaviour
         /// Use to clean up or reset data.
         /// </summary>
         public virtual void Release() { }
-
-        /// <summary>
-        /// Called when the behaviour is becoming active and indicating if behaviour can operate.
-        /// Can be used to check if conditions are met for behviour to operate.
-        /// </summary>
-        public virtual bool IsOperational()
-            => true;
     }
 }

@@ -194,8 +194,7 @@ namespace Pihkura.Camera
                 this.behaviourIndex = 0;
 
             this.data.current.Update(this.transform);
-            this.availabeBehaviours[this.behaviourIndex].Initialize(this.target);
-            if (!this.availabeBehaviours[this.behaviourIndex].IsOperational())
+            if (!this.availabeBehaviours[this.behaviourIndex].Initialize(this.target))
                 this.RotateBehaviour();
         }
 
