@@ -42,5 +42,8 @@ namespace Pihkura.Camera.Behaviour
             float t = 1f - Mathf.Exp(-dt / Mathf.Max(this.configuration.rotSmoothTime, 0.0001f));
             this.data.next.rotation = Quaternion.Slerp(this.data.current.rotation, rotation, t);
         }
+
+        public override bool IsOperational()
+            => this.data.target != null;
     }
 }

@@ -65,5 +65,8 @@ namespace Pihkura.Camera.Behaviour
         {
 
         }
+        
+        public override bool IsOperational()
+            => this.data.target != null;
     }
 }

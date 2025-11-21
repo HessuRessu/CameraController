@@ -54,7 +54,7 @@ namespace Pihkura.Camera.Behaviour
         /// </summary>
         public virtual void HandleRotation(float dt)
         {
-           if (data.rotationInputX != 0f || data.rotationInputY != 0f)
+            if (data.rotationInputX != 0f || data.rotationInputY != 0f)
             {
                 if (Mathf.Abs(data.rotationInputY) > 0.0001f)
                 {
@@ -95,7 +95,7 @@ namespace Pihkura.Camera.Behaviour
         /// </summary>
         public virtual void HandleZoom(float dt)
         {
-             if (Mathf.Abs(data.zoomInput) > 0.0001f)
+            if (Mathf.Abs(data.zoomInput) > 0.0001f)
             {
                 data.distance -= data.zoomInput * configuration.zoomSpeed * data.speedRatio;
                 data.distance = Mathf.Clamp(data.distance, configuration.minDistance, configuration.maxDistance);
@@ -130,5 +130,12 @@ namespace Pihkura.Camera.Behaviour
         /// Use to clean up or reset data.
         /// </summary>
         public virtual void Release() { }
+
+        /// <summary>
+        /// Called when the behaviour is becoming active and indicating if behaviour can operate.
+        /// Can be used to check if conditions are met for behviour to operate.
+        /// </summary>
+        public virtual bool IsOperational()
+            => true;
     }
 }

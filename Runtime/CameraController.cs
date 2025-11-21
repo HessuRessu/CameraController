@@ -181,6 +181,8 @@ namespace Pihkura.Camera
 
             this.data.current.Update(this.transform);
             this.availabeBehaviours[this.behaviourIndex].Initialize(this.target);
+            if (!this.availabeBehaviours[this.behaviourIndex].IsOperational())
+                this.RotateBehaviour();
         }
 
         /// <summary>

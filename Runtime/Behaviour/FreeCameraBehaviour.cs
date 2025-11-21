@@ -25,26 +25,14 @@ namespace Pihkura.Camera.Behaviour
 
         public override void HandleMovement(float dt)
         {
-            // Base direction vectors
-            Vector3 forward = data.current.forward;
-            Vector3 right = data.current.right;
-            Vector3 up = Vector3.up;
-
-            // Normalize to prevent diagonal speed boost
-            forward.y = 0f;
-            forward.Normalize();
-            right.Normalize();
-
             Vector3 move = Vector3.zero;
 
             if (Mathf.Abs(data.movementInputY) > 0.0001f)
-                move += forward * data.movementInputY * this.data.speedRatio * configuration.movementSpeed * 20f;
+                move += this.configuration.movementSpeed * this.data.speedRatio * this.data.movementInputY * new Vector3(this.data.current.forward.x, 0f, this.data.current.forward.z).normalized * dt;
             if (Mathf.Abs(data.movementInputX) > 0.0001f)
-                move += right * data.movementInputX * this.data.speedRatio * configuration.movementSpeed * 20f;
+                move += this.configuration.movementSpeed * this.data.speedRatio * this.data.movementInputX * this.data.current.right.normalized * dt;
             if (Mathf.Abs(data.zoomInput) > 0.0001f)
-                move += (data.zoomInput < 0 ? -up : up) * this.data.speedRatio * configuration.zoomSpeed * 20f;
-
-            // move.Normalize();
+                move += this.data.speedRatio * this.configuration.zoomSpeed * (data.zoomInput < 0 ? Vector3.up : -Vector3.up) * dt;
 
             Vector3 desiredPosition = data.current.position + move;
 
@@ -54,7 +42,7 @@ namespace Pihkura.Camera.Behaviour
                 desiredPosition.y = this.configuration.groundRay.Point.y + this.configuration.maxDistance;
 
             // Smooth movement
-            data.next.position = Vector3.SmoothDamp(data.current.position, desiredPosition, ref data.moveVelocity, configuration.moveSmoothTime, float.PositiveInfinity, dt);
+            data.next.position = desiredPosition; // Vector3.SmoothDamp(data.current.position, desiredPosition, ref data.moveVelocity, configuration.moveSmoothTime, float.PositiveInfinity, dt);
             CameraUtils.HandleCameraCollision(configuration, data, ref data.next.position);
         }
 
@@ -64,7 +52,9 @@ namespace Pihkura.Camera.Behaviour
             data.next.rotation = Quaternion.Euler(data.pitch, data.yaw, 0f);
         }
 
-        public override void HandleZoom(float dt) { }
+        public override void HandleZoom(float dt)
+        {
+        }
 
         public override void OnUpdateBegin()
         {
