@@ -123,6 +123,20 @@ namespace Pihkura.Camera
         }
 
         /// <summary>
+        /// Set camera position and updates rays.
+        /// </summary>
+        public void SetPosition(Vector3 position, float distance = 10f)
+        {
+            this.transform.position = position;
+            this.UpdateRays();
+            this.data.distance = distance;
+            Vector3 offsetPosition = this.transform.position;
+            this.availabeBehaviours[this.behaviourIndex].Initialize(this.target);
+            offsetPosition.y = this.configuration.groundRay.Point.y + this.configuration.minDistance;
+            this.transform.position = offsetPosition;
+        }
+
+        /// <summary>
         /// Updates the camera each frame after all other updates.
         /// Handles input, zoom, rotation, movement, and behaviour updates.
         /// </summary>
