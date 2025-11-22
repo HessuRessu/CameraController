@@ -29,11 +29,9 @@ namespace Pihkura.Camera.Behaviour
             Vector3 move = Vector3.zero;
 
             if (Mathf.Abs(data.movementInputY) > 0.0001f)
-                move += this.configuration.movementSpeed * this.data.speedRatio * this.data.movementInputY * new Vector3(this.data.current.forward.x, 0f, this.data.current.forward.z).normalized * dt;
+                move += this.configuration.movementSpeed * this.data.speedRatio * this.data.movementInputY * this.data.current.forward.normalized * dt;
             if (Mathf.Abs(data.movementInputX) > 0.0001f)
                 move += this.configuration.movementSpeed * this.data.speedRatio * this.data.movementInputX * this.data.current.right.normalized * dt;
-            if (Mathf.Abs(data.zoomInput) > 0.0001f)
-                move += this.data.speedRatio * this.configuration.zoomSpeed * (data.zoomInput < 0 ? Vector3.up : -Vector3.up) * dt;
 
             Vector3 desiredPosition = data.current.position + move;
 
@@ -49,7 +47,39 @@ namespace Pihkura.Camera.Behaviour
 
         public override void HandleRotation(float dt)
         {
-            base.HandleRotation(dt);
+            if (data.rotationInputX != 0f || data.rotationInputY != 0f)
+            {
+                if (Mathf.Abs(data.rotationInputY) > 0.0001f)
+                {
+                    data.targetYaw += data.rotationInputY * configuration.yawSpeed * dt;
+                    this.moving = true;
+                }
+                if (Mathf.Abs(data.rotationInputX) > 0.0001f)
+                {
+                    data.targetPitch -= data.rotationInputX * configuration.pitchSpeed * dt;
+                    // data.targetPitch = Mathf.Clamp(data.targetPitch, configuration.minPitch, configuration.maxPitch); // We wont be clamping in free camera mode.
+                    this.moving = true;
+                }
+            }
+
+            // Smoothly interpolate yaw and pitch to prevent sudden jumps
+            data.yaw = Mathf.SmoothDampAngle(
+                data.yaw,
+                data.targetYaw,
+                ref data.yawVelocity,
+                configuration.rotSmoothTime,
+                float.PositiveInfinity,
+                dt
+            );
+
+            data.pitch = Mathf.SmoothDampAngle(
+                data.pitch,
+                data.targetPitch,
+                ref data.pitchVelocity,
+                configuration.rotSmoothTime,
+                float.PositiveInfinity,
+                dt
+            );
             data.next.rotation = Quaternion.Euler(data.pitch, data.yaw, 0f);
         }
 
